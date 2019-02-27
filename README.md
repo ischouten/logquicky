@@ -46,4 +46,9 @@ log.info("This is nicely formatted.")
 log.warning("Warnings stand out!")
 ```
 
-## Example output
+## Example
+
+![res-example/example.svg](res-example/example.svg)
+
+TODO: Write example with python shell.
+TODO: Cleanup blank frames in svg.

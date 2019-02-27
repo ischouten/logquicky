@@ -1,1 +1,1 @@
-from logquicky.logquicky import *
+from logquicky import *
