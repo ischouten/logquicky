@@ -58,5 +58,5 @@ def add(logger_name, file: str=None, rewrite: bool=False, level: str="INFO"):
 
     return log
 
-logger = add('logquicky', level="WARNING")
+logger = add('logquicky', level="ERROR")
 dlog = get('logquicky')

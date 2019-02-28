@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import time
 import logquicky
 
@@ -14,7 +15,7 @@ time.sleep(0.5)
 log.info("Info message")
 time.sleep(0.5)
 
-log.warning("Warnings message.")
+log.warning("Warning message.")
 time.sleep(0.7)
 
 log.error("Error message")

@@ -1,6 +1,6 @@
 # Logquicky
 
-## Nicer python logging
+## Nicer python logging in one line
 
 The python logging package from the standard library is awesome.
 However, even hough setting it up takes just a few lines of code, configuring it to make it look nice accross projects, just adds up to doing the same thing over and over.
@@ -47,6 +47,6 @@ log.info("This is nicely formatted.")
 log.warning("Warnings stand out!")
 ```
 
-## Example
+### See it in action
 
 ![res-example/example.svg](res-example/example.svg)

@@ -1,4 +1,31 @@
-.python-version
-**/.venv
+# Byte compiled stuff
 **/__pycache__
-**/.vscode/
+
+# Distribution / packaging
+**/bin
+**/build
+**/dist
+**/eggs
+**/lib
+**/lib64
+**/parts
+**/var
+**/sdist
+**/*.egg-info
+.installed.cfg
+*.egg
+
+# Unit test and coverage reports
+**/.tox
+**/.coverage
+**/.cache
+nosests.xml
+coverage.xml
+.python-version
+
+# Virtual env
+**/.venv
+
+# IDE configuration folders
+**/.vscode
+**/.idea
