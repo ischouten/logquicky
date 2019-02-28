@@ -1,15 +1,16 @@
 from setuptools import setup, find_packages
 
+package_name = 'logquicky'
+
 with open ("README.md", "r") as readme_file:
   readme = readme_file.read()
 
 requirements = []
 
-
 setup(
-  name = 'logquicky',
-  packages = ['logquicky'],
-  version = '0.0.1',
+  name = package_name,
+  packages = [package_name, 'res'],
+  version = '0.0.3',
   license='GPLv3',
   description = 'Nicer python logging in one line',
   long_description= readme,
@@ -17,7 +18,7 @@ setup(
   author = 'Igor Schouten',
   author_email = 'igor@igorschouten.com',
   url = 'https://github.com/ischouten/logquicky',
-  keywords = ['Logging', 'Colored outputs'],
+  keywords = ['Logging', 'Colored output'],
   install_requires=requirements,
   classifiers=[
     'Development Status :: 3 - Alpha',      # Options: "3 - Alpha", "4 - Beta", "5 - Production/Stable"
