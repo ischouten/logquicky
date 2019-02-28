@@ -4,14 +4,14 @@ import sys
 import os
 
 
-def get(logger_name):
+def load(logger_name):
 
     """ Shorthand for loading a logger """
 
     return logging.getLogger(logger_name)
 
 
-def add(logger_name, file: str=None, rewrite: bool=False, level: str="INFO"):
+def create(logger_name, file: str=None, rewrite: bool=False, level: str="INFO"):
 
     """ Configures a new logger object. """
 
@@ -58,5 +58,4 @@ def add(logger_name, file: str=None, rewrite: bool=False, level: str="INFO"):
 
     return log
 
-logger = add('logquicky', level="ERROR")
-dlog = get('logquicky')
+dlog = create('logquicky', level="ERROR")

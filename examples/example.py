@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 import time
+
+# Hack for importing package beyond top-level
+import sys, os
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
+
 import logquicky
 
 # Create your logger.
-logger = logquicky.add('my-logger', level="DEBUG")
-
-# Enable writing to your logger
-log = logquicky.get('my-logger')
+log = logquicky.create('my-logger', level="DEBUG")
 
 # Log!
 log.debug("Debug message")

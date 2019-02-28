@@ -12,4 +12,5 @@ twine = "*"
 python_version = "3.7"
 
 [scripts]
-example = "python simple-example.py"
+example = "python examples/example.py"
+example2 = "python examples/example2.py"

@@ -9,8 +9,8 @@ requirements = []
 
 setup(
   name = package_name,
-  packages = [package_name, 'res'],
-  version = '0.0.3',
+  packages = [package_name],
+  version = '0.0.1',
   license='GPLv3',
   description = 'Nicer python logging in one line',
   long_description= readme,
@@ -20,6 +20,7 @@ setup(
   url = 'https://github.com/ischouten/logquicky',
   keywords = ['Logging', 'Colored output'],
   install_requires=requirements,
+  include_package_data=True,
   classifiers=[
     'Development Status :: 3 - Alpha',      # Options: "3 - Alpha", "4 - Beta", "5 - Production/Stable"
     'Intended Audience :: Developers',
