@@ -1,11 +1,24 @@
+import time
 import logquicky
 
-# Add this line to create your logger.
-logger = logquicky.add('my-logger')
+# Create your logger.
+logger = logquicky.add('my-logger', level="DEBUG")
 
-# Use this in every file where you want be able to log:
+# Enable writing to your logger
 log = logquicky.get('my-logger')
 
-log.info("This is nicely formatted.")
+# Log!
+log.debug("Debug message")
+time.sleep(0.5)
 
-log.warning("Warnings stand out!")
+log.info("Info message")
+time.sleep(0.5)
+
+log.warning("Warnings message.")
+time.sleep(0.7)
+
+log.error("Error message")
+time.sleep(0.4)
+
+log.critical("Critical message")
+time.sleep(0.6)

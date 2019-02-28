@@ -1,35 +1,62 @@
 import logging
 from logging.handlers import RotatingFileHandler
 import sys
+import os
+
 
 def get(logger_name):
-  return logging.getLogger(logger_name)
+
+    """ Shorthand for loading a logger """
+
+    return logging.getLogger(logger_name)
 
 
-def add(logger_name, file=None, rewrite=False, screen=True, level=logging.INFO):
+def add(logger_name, file: str=None, rewrite: bool=False, level: str="INFO"):
+
+    """ Configures a new logger object. """
+
     log = logging.getLogger(logger_name)
 
-    logging.addLevelName(30, "WARN")
+    # Some colors to make the next part more readable
+    blue = "\033[0;34m"
+    green = "\033[0;32m"
+    purple = "\033[0;35m"
+    red = "\033[0;31m"
+    bold_red = "\033[1;31m"
+    reset = "\033[0m"
 
-    logging.addLevelName(logging.WARN, "\033[35m%s\033[0m" % logging.getLevelName(logging.WARN))
-    logging.addLevelName(logging.INFO, "\033[32m%s\033[0m" % logging.getLevelName(logging.INFO))
-    logging.addLevelName(logging.ERROR, "\033[31m%s\033[0m" % logging.getLevelName(logging.ERROR))
-    logging.addLevelName(logging.DEBUG, "\033[34m%s\033[0m" % logging.getLevelName(logging.DEBUG))
+    # Configure new configuration for "levelname" (add colors)
+    logging.addLevelName(logging.DEBUG, f"{blue}DEBUG{reset}")
+    logging.addLevelName(logging.INFO, f"{green}INFO{reset}")
+    logging.addLevelName(logging.WARN, f"{purple}WARN{reset}")
+    logging.addLevelName(logging.ERROR, f"{red}ERROR{reset}")
+    logging.addLevelName(logging.CRITICAL, f"{bold_red}CRITICAL{reset}")
 
+    # Configure the logger to screen / STDOUT
     formatter = logging.Formatter('%(asctime)s %(name)s [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
-    if file:
-        file_handler = RotatingFileHandler(file, mode='a', maxBytes=1000000, backupCount=2, encoding='utf-8')
-        file_handler.setFormatter(formatter)
-        log.addHandler(file_handler)
+    stream_handler = logging.StreamHandler(sys.stdout)
+    stream_handler.setFormatter(formatter)
+    if rewrite:
+        stream_handler.terminator = ""
+    log.addHandler(stream_handler)
 
-    if screen:
-        stream_handler = logging.StreamHandler(sys.stdout)
-        stream_handler.setFormatter(formatter)
-        if rewrite:
-            stream_handler.terminator = ""
-        log.addHandler(stream_handler)
+    try:
+        if file:
+            # If file is "True", check environment var for log location, or fall back to logger_name in current directory."
+            if type(file) == bool:
+                file = os.environ.get("LOG_FILE_OUTPUT", logger_name)
 
+            file_handler = RotatingFileHandler(file, mode='a', maxBytes=1000000, backupCount=2, encoding='utf-8')
+            file_handler.setFormatter(formatter)
+            log.addHandler(file_handler)
+    except PermissionError as e:
+        dlog.error(f"Cannot write log to file in '{file}' due to permission issues.")
+
+    # Set the final level
     log.setLevel(level)
 
     return log
+
+logger = add('logquicky', level="WARNING")
+dlog = get('logquicky')

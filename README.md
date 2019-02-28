@@ -21,7 +21,6 @@ Finally, this is also my first (hopefully useful) little OpenSource software up 
 - Based on Python's logging module.
 - Renames log level warning to 'WARN' in output for better readability.
 
-
 ## Installation
 
 ```bash
@@ -29,6 +28,8 @@ pip install logquicky
 ```
 
 ## How to use
+
+Note: logquicky is supported for python 3.6+ (due to usage of f-strings)
 
 ### Quick example
 
@@ -49,6 +50,3 @@ log.warning("Warnings stand out!")
 ## Example
 
 ![res-example/example.svg](res-example/example.svg)
-
-TODO: Write example with python shell.
-TODO: Cleanup blank frames in svg.
