@@ -11,11 +11,12 @@ def load(logger_name):
     return logging.getLogger(logger_name)
 
 
-def create(logger_name, file: str=None, rewrite: bool=False, level: str="INFO"):
+def create(logger_name, file: str = None, rewrite: bool = False, level: str = "INFO", propagate=False):
 
     """ Configures a new logger object. """
 
     log = logging.getLogger(logger_name)
+    log.propagate = propagate
 
     # Some colors to make the next part more readable
     blue = "\033[0;34m"
@@ -33,7 +34,7 @@ def create(logger_name, file: str=None, rewrite: bool=False, level: str="INFO"):
     logging.addLevelName(logging.CRITICAL, f"{bold_red}CRITICAL{reset}")
 
     # Configure the logger to screen / STDOUT
-    formatter = logging.Formatter('%(asctime)s %(name)s [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+    formatter = logging.Formatter("%(asctime)s %(name)s [%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 
     stream_handler = logging.StreamHandler(sys.stdout)
     stream_handler.setFormatter(formatter)
@@ -47,7 +48,7 @@ def create(logger_name, file: str=None, rewrite: bool=False, level: str="INFO"):
             if type(file) == bool:
                 file = os.environ.get("LOG_FILE_OUTPUT", logger_name)
 
-            file_handler = RotatingFileHandler(file, mode='a', maxBytes=1000000, backupCount=2, encoding='utf-8')
+            file_handler = RotatingFileHandler(file, mode="a", maxBytes=1000000, backupCount=2, encoding="utf-8")
             file_handler.setFormatter(formatter)
             log.addHandler(file_handler)
     except PermissionError as e:
@@ -58,4 +59,5 @@ def create(logger_name, file: str=None, rewrite: bool=False, level: str="INFO"):
 
     return log
 
-dlog = create('logquicky', level="ERROR")
+dlog = create("logquicky", level="ERROR")
+

@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 twine = "*"
+black = "*"
 
 [packages]
 
@@ -14,3 +15,6 @@ python_version = "3.7"
 [scripts]
 example = "python examples/example.py"
 example2 = "python examples/example2.py"
+
+[pipenv]
+allow_prereleases = true
