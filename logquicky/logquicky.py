@@ -38,8 +38,9 @@ def load(logger_name, file: str = None, rewrite: bool = False, level: str = "INF
     log.propagate = propagate
 
     # Nicer to show just 'WARN' instead of WARNING in the output.
+    logging.addLevelName(logging.WARNING, "WARN")
+    # Add the trace level.
     logging.addLevelName(TRACE_LVL, "TRACE")
-    logging.addLevelName(logging.WARN, f"WARN")
 
     # Configure the logger to screen / STDOUT
     stream_formatter = BetterFormatter(
@@ -72,7 +73,6 @@ def load(logger_name, file: str = None, rewrite: bool = False, level: str = "INF
 
     # Set the final level
     log.setLevel(level)
-    print(type(log))
     return log
 
 
@@ -82,24 +82,20 @@ class BetterFormatter(logging.Formatter):
 
     def format(self, record):
         levelname = record.levelname
-        # print(record.__dict__)
-        # record.msg = "\U0001F600  " + record.msg
+
         message = logging.Formatter.format(self, record)
 
-        message = message.replace("$COLOR", LEVEL_FORMAT.get(levelname, "INFO"))
+        message = message.replace("$COLOR", LEVEL_FORMAT.get(levelname, ""))
         message = message.replace("$RESET", "\033[0m")
-
         return message
 
 
 def trace(self, message, *args, **kwargs):
 
-    # if emotion != None:
-    #     message = f"{emotion}  {message}"
-
     if self.isEnabledFor(TRACE_LVL):
         self._log(TRACE_LVL, message, args, **kwargs)
 
 
+# Add the trace option to the functions of this logger.
 logging.Logger.trace = trace
 
