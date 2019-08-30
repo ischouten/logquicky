@@ -3,41 +3,54 @@ from logging.handlers import RotatingFileHandler
 import sys
 import os
 
+# Some colors to make the next part more readable
+LEVEL_FORMAT = {
+    "TRACE": "\033[0;35m",  # purple
+    "DEBUG": "\033[0;34m",  # blue
+    "INFO": "\033[0;32m",  # green
+    "WARN": "\033[0;33m",  # orange
+    "ERROR": "\033[0;31m",  # red
+    "CRITICAL": "\033[1;31m",  # Bold red
+}
 
-def load(logger_name):
-
-    """ Shorthand for loading a logger """
-
-    return logging.getLogger(logger_name)
+# Reset sequence to remove color
+RESET_SEQ = "\033[0m"
+TRACE_LVL = 5
 
 
-def create(logger_name, file: str = None, rewrite: bool = False, level: str = "INFO", propagate=False):
+def create(*args, **kwargs):
 
-    """ Configures a new logger object. """
+    """ Legacy shorthand for loading a logger."""
+
+    # This method is no longer necessary, as create will return the same logger.
+    logging.getLogger("logquicky").warning("Logquicky Warning: Create method is deprecated. Just use 'load'.")
+    return load(*args, **kwargs)
+
+
+def load(logger_name, file: str = None, rewrite: bool = False, level: str = "INFO", propagate=False):
+
+    """ Configures a logger object. If the logger was already configured, it will return the existing logger but not reconfigure it. """
+
+    if logger_name in logging.Logger.manager.loggerDict.keys():
+        return logging.getLogger(logger_name)
 
     log = logging.getLogger(logger_name)
     log.propagate = propagate
 
-    # Some colors to make the next part more readable
-    blue = "\033[0;34m"
-    green = "\033[0;32m"
-    purple = "\033[0;35m"
-    red = "\033[0;31m"
-    bold_red = "\033[1;31m"
-    reset = "\033[0m"
-
-    # Configure new configuration for "levelname" (add colors)
-    logging.addLevelName(logging.DEBUG, f"{blue}DEBUG{reset}")
-    logging.addLevelName(logging.INFO, f"{green}INFO{reset}")
-    logging.addLevelName(logging.WARN, f"{purple}WARN{reset}")
-    logging.addLevelName(logging.ERROR, f"{red}ERROR{reset}")
-    logging.addLevelName(logging.CRITICAL, f"{bold_red}CRITICAL{reset}")
+    # Nicer to show just 'WARN' instead of WARNING in the output.
+    logging.addLevelName(TRACE_LVL, "TRACE")
+    logging.addLevelName(logging.WARN, f"WARN")
 
     # Configure the logger to screen / STDOUT
-    formatter = logging.Formatter("%(asctime)s %(name)s [%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
+    stream_formatter = BetterFormatter(
+        "%(asctime)s %(name)s [$COLOR%(levelname)s$RESET] %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+    )
+
+    # Fileformatter should not include colors.
+    file_formatter = BetterFormatter("%(asctime)s %(name)s [%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 
     stream_handler = logging.StreamHandler(sys.stdout)
-    stream_handler.setFormatter(formatter)
+    stream_handler.setFormatter(stream_formatter)
     if rewrite:
         stream_handler.terminator = ""
     log.addHandler(stream_handler)
@@ -45,19 +58,48 @@ def create(logger_name, file: str = None, rewrite: bool = False, level: str = "I
     try:
         if file:
             # If file is "True", check environment var for log location, or fall back to logger_name in current directory."
+
             if type(file) == bool:
                 file = os.environ.get("LOG_FILE_OUTPUT", logger_name)
 
             file_handler = RotatingFileHandler(file, mode="a", maxBytes=1000000, backupCount=2, encoding="utf-8")
-            file_handler.setFormatter(formatter)
+            file_handler.setFormatter(file_formatter)
             log.addHandler(file_handler)
     except PermissionError as e:
-        dlog.error(f"Cannot write log to file in '{file}' due to permission issues.")
+        logging.getLogger("logquicky").error(
+            f"Logquicky cannot write log to file in '{file}' due to permission issues."
+        )
 
     # Set the final level
     log.setLevel(level)
-
+    print(type(log))
     return log
 
-dlog = create("logquicky", level="ERROR")
+
+class BetterFormatter(logging.Formatter):
+    def __init__(self, *args, **kwargs):
+        logging.Formatter.__init__(self, *args, **kwargs)
+
+    def format(self, record):
+        levelname = record.levelname
+        # print(record.__dict__)
+        # record.msg = "\U0001F600  " + record.msg
+        message = logging.Formatter.format(self, record)
+
+        message = message.replace("$COLOR", LEVEL_FORMAT.get(levelname, "INFO"))
+        message = message.replace("$RESET", "\033[0m")
+
+        return message
+
+
+def trace(self, message, *args, **kwargs):
+
+    # if emotion != None:
+    #     message = f"{emotion}  {message}"
+
+    if self.isEnabledFor(TRACE_LVL):
+        self._log(TRACE_LVL, message, args, **kwargs)
+
+
+logging.Logger.trace = trace
 
