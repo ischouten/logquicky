@@ -38,7 +38,7 @@ logquicky is supported for python 3.6+ (due to usage of f-strings)
 import logquicky
 
 # Add this line to create your logger.
-log = logquicky.create('my-logger')
+log = logquicky.load('my-logger')
 
 # Start logging!
 log.info("This is a log message")
@@ -57,7 +57,7 @@ import logquicky
 import other_file
 
 # Creates a new logger and returns it.
-log = logquicky.create('my-logger')
+log = logquicky.load('my-logger')
 
 log.info("I can log from here...")
 ```
