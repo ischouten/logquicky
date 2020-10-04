@@ -32,7 +32,9 @@ def load(logger_name, file: str = None, rewrite: bool = False, level: str = "INF
     """ Configures a logger object. If the logger was already configured, it will return the existing logger but not reconfigure it. """
 
     if logger_name in logging.Logger.manager.loggerDict.keys():
-        return logging.getLogger(logger_name)
+        log = logging.getLogger(logger_name)
+        log.setLevel(level)
+        return log
 
     log = logging.getLogger(logger_name)
     log.propagate = propagate
