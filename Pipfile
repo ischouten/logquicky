@@ -10,7 +10,7 @@ black = "*"
 [packages]
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
 
 [scripts]
 example = "python examples/example.py"
