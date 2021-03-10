@@ -10,7 +10,7 @@ requirements = []
 setup(
     name=package_name,
     packages=[package_name],
-    version="0.0.3",
+    version="0.0.8",
     license="GPLv3",
     description="Nicer python logging in one line",
     long_description=readme,
