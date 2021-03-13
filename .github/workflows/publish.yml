@@ -1,4 +1,7 @@
-on: push
+on:
+  push:
+    branches: [main]
+
 jobs:
   build-test-publish:
     name: "Build, test, publish"
