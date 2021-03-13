@@ -13,6 +13,7 @@ setup(
     setup_requires=["setuptools-git-versioning"],
     version_config={
         "starting_version": "0.0.6",
+        "dirty_template": "{tag}",
     },
     license="GPLv3",
     description="Nicer python logging in one line",
