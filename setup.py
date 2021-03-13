@@ -10,7 +10,10 @@ requirements = []
 setup(
     name=package_name,
     packages=[package_name],
-    version="0.0.8",
+    setup_requires=["setuptools-git-versioning"],
+    version_config={
+        "starting_version": "0.0.6",
+    },
     license="GPLv3",
     description="Nicer python logging in one line",
     long_description=readme,
