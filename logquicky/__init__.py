@@ -1,2 +1,2 @@
 from logquicky.logquicky import *
-from logquicky.progressBar import ProgressBar
+from logquicky.progress_bar import ProgressBar

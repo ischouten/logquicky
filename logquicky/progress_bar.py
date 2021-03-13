@@ -43,4 +43,3 @@ class ProgressBar:
 
         self.log.info(message)
         return percentage
-
