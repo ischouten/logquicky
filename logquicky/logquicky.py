@@ -2,6 +2,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import sys
 import os
+from typing import Union
 
 # Some colors to make the next part more readable
 LEVEL_FORMAT = {
@@ -27,7 +28,7 @@ def create(*args, **kwargs):
     return load(*args, **kwargs)
 
 
-def load(logger_name, file: str = None, rewrite: bool = False, level: str = "INFO", propagate=False):
+def load(logger_name, file: Union[str, bool] = None, rewrite: bool = False, level: str = "INFO", propagate=False):
 
     """ Configures a logger object. If the logger was already configured, it will return the existing logger but not reconfigure it. """
 
@@ -100,4 +101,3 @@ def trace(self, message, *args, **kwargs):
 
 # Add the trace option to the functions of this logger.
 logging.Logger.trace = trace
-
